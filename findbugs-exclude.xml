@@ -1,5 +1,5 @@
 <FindBugsFilter>
 	<Match>
-		<Package name="~com\.transformer.*" />
+		<Package name="~org\.transformer.*" />
 	</Match>
 </FindBugsFilter>
