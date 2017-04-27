@@ -74,11 +74,10 @@ public final class HttpsPostUtils {
    * @return 调用返回值
    * @throws Exception 异常信息
    */
-  @SuppressWarnings("synthetic-access")
   public static String doPost(String url, String ctype, byte[] content, int connectTimeout,
       int readTimeout) throws Exception {
     HttpsURLConnection conn = null;
-    OutputStream out = null;
+
     String rsp = null;
     try {
       try {
@@ -99,8 +98,7 @@ public final class HttpsPostUtils {
       } catch (Exception e) {
         throw e;
       }
-      try {
-        out = conn.getOutputStream();
+      try (OutputStream out = conn.getOutputStream()) {
         out.write(content);
         rsp = getResponseAsString(conn);
       } catch (IOException e) {
@@ -108,9 +106,6 @@ public final class HttpsPostUtils {
       }
 
     } finally {
-      if (out != null) {
-        out.close();
-      }
       if (conn != null) {
         conn.disconnect();
       }
@@ -123,6 +118,9 @@ public final class HttpsPostUtils {
    * 默认的加解密管理器.
    */
   private static class DefaultTrustManager implements X509TrustManager {
+
+    public DefaultTrustManager() {
+    }
 
     @Override
     public void checkClientTrusted(X509Certificate[] arg0, String arg1)
@@ -169,8 +167,7 @@ public final class HttpsPostUtils {
    */
   protected static String getResponseAsString(HttpURLConnection conn) throws IOException {
     String charset = getResponseCharset(conn.getContentType());
-    InputStream es = conn.getErrorStream();
-    try {
+    try (InputStream es = conn.getErrorStream()) {
       if (es == null) {
         return getStreamAsString(conn.getInputStream(), charset);
       } else {
@@ -181,8 +178,6 @@ public final class HttpsPostUtils {
           throw new IOException(msg);
         }
       }
-    } finally {
-      es.close();
     }
   }
 
@@ -194,8 +189,7 @@ public final class HttpsPostUtils {
    * @throws IOException IO异常
    */
   private static String getStreamAsString(InputStream stream, String charset) throws IOException {
-    try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(stream, charset));
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, charset))) {
       StringWriter writer = new StringWriter();
 
       char[] chars = new char[INIT_CHAR_LENGTH];
