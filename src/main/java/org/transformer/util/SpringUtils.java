@@ -17,14 +17,6 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
   /** The bean factory. */
   private static ConfigurableListableBeanFactory beanFactory; // Spring应用上下文环境
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.springframework.beans.factory.config.BeanFactoryPostProcessor#
-   * postProcessBeanFactory
-   * (org.springframework.beans.factory.config.ConfigurableListableBeanFactory
-   * )
-   */
   @Override
   public void postProcessBeanFactory(
       ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
