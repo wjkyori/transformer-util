@@ -6,7 +6,7 @@
 		<artifactId>parent</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>util</artifactId>
+	<artifactId>transformer-util</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
 	<name>Programming :: Module :: util</name>
